@@ -35,22 +35,26 @@
                     </Style>
                 </ResourceDictionary>
             </Grid.Resources>
-            <Label Text="{Binding CurrentEntry}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" FontSize="Large" LineBreakMode="HeadTruncation" VerticalOptions="Center" HorizontalTextAlignment="End" />
-            <Button Text="C" Grid.Row="1" Grid.Column="0" Command="{Binding ClearCommand}" />
-            <Button Text="CE" Grid.Row="1" Grid.Column="1" Command="{Binding ClearEntryCommand}" />
-            <Button Text="&#x21E6;" Grid.Row="1" Grid.Column="2" Command="{Binding BackspaceCommand}" />
-            <Button Text="+" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" Command="{Binding AddCommand}" />
-            <Button Text="7" Grid.Row="2" Grid.Column="0" Command="{Binding NumericCommand}" CommandParameter="7" />
-            <Button Text="8" Grid.Row="2" Grid.Column="1" Command="{Binding NumericCommand}" CommandParameter="8" />
-            <Button Text="9" Grid.Row="2" Grid.Column="2" Command="{Binding NumericCommand}" CommandParameter="9" />
-            <Button Text="4" Grid.Row="3" Grid.Column="0" Command="{Binding NumericCommand}" CommandParameter="4" />
-            <Button Text="5" Grid.Row="3" Grid.Column="1" Command="{Binding NumericCommand}" CommandParameter="5" />
-            <Button Text="6" Grid.Row="3" Grid.Column="2" Command="{Binding NumericCommand}" CommandParameter="6" />
-            <Button Text="1" Grid.Row="4" Grid.Column="0" Command="{Binding NumericCommand}" CommandParameter="1" />
-            <Button Text="2" Grid.Row="4" Grid.Column="1" Command="{Binding NumericCommand}" CommandParameter="2" />
-            <Button Text="3" Grid.Row="4" Grid.Column="2" Command="{Binding NumericCommand}" CommandParameter="3" />
-            <Button Text="0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NumericCommand}" CommandParameter="0" />
-            <Button Text="&#x00B7;" Grid.Row="5" Grid.Column="2" Command="{Binding DecimalPointCommand}" />
+            <Label x:Name="displayLabel" Text="{Binding CurrentEntry}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" FontSize="Large" LineBreakMode="HeadTruncation" VerticalOptions="Center" HorizontalTextAlignment="End" />
+            <Button StyleId="C" Text="C" Grid.Row="1" Grid.Column="0" Command="{Binding ClearCommand}" />
+            <Button StyleId="CE" Text="CE" Grid.Row="1" Grid.Column="1" Command="{Binding ClearEntryCommand}" />
+            <Button StyleId="BackSpace" Text="&#x21E6;" Grid.Row="1" Grid.Column="2" Command="{Binding BackspaceCommand}" />
+            <Button StyleId="plus" Text="+" Grid.Row="1" Grid.Column="3" Grid.RowSpan="1" Command="{Binding AddCommand}" />
+            <Button StyleId="7" Text="7" Grid.Row="2" Grid.Column="0" Command="{Binding NumericCommand}" CommandParameter="7" />
+            <Button StyleId="8" Text="8" Grid.Row="2" Grid.Column="1" Command="{Binding NumericCommand}" CommandParameter="8" />
+            <Button StyleId="9" Text="9" Grid.Row="2" Grid.Column="2" Command="{Binding NumericCommand}" CommandParameter="9" />
+            <Button StyleId="minus" Text="-" Grid.Row="2" Grid.Column="3" Grid.RowSpan="1" Command="{Binding SubtractCommand}" />
+            <Button StyleId="4" Text="4" Grid.Row="3" Grid.Column="0" Command="{Binding NumericCommand}" CommandParameter="4" />
+            <Button StyleId="5" Text="5" Grid.Row="3" Grid.Column="1" Command="{Binding NumericCommand}" CommandParameter="5" />
+            <Button StyleId="6" Text="6" Grid.Row="3" Grid.Column="2" Command="{Binding NumericCommand}" CommandParameter="6" />
+            <Button StyleId="divide" Text="&#247;" Grid.Row="3" Grid.Column="3" Grid.RowSpan="1" Command="{Binding DivideCommand}" />
+            <Button StyleId="1" Text="1" Grid.Row="4" Grid.Column="0" Command="{Binding NumericCommand}" CommandParameter="1" />
+            <Button StyleId="2" Text="2" Grid.Row="4" Grid.Column="1" Command="{Binding NumericCommand}" CommandParameter="2" />
+            <Button StyleId="3" Text="3" Grid.Row="4" Grid.Column="2" Command="{Binding NumericCommand}" CommandParameter="3" />
+            <Button StyleId="multiply" Text="X" Grid.Row="4" Grid.Column="3" Grid.RowSpan="1" Command="{Binding MultiplyCommand}" />
+            <Button StyleId="0" Text="0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NumericCommand}" CommandParameter="0" />
+            <Button StyleId="decimalpoint" Text="&#x00B7;" Grid.Row="5" Grid.Column="2" Command="{Binding DecimalPointCommand}" />
+            <Button StyleId="equals" Text="=" Grid.Row="5" Grid.Column="3" Command="{Binding EqualsCommand}" />
         </Grid>
     </Grid>
 </ContentPage>

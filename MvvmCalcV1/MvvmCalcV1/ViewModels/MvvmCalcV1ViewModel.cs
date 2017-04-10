@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Windows;
+using System.Text.RegularExpressions;
 
 
 namespace MvvmCalcV1.ViewModels
@@ -28,6 +30,10 @@ namespace MvvmCalcV1.ViewModels
         public ICommand NumericCommand { set; get; }
         public ICommand DecimalPointCommand { set; get; }
         public ICommand AddCommand { set; get; }
+        public ICommand EqualsCommand { set; get; }
+        public ICommand MultiplyCommand { set; get; }
+        public ICommand DivideCommand { set; get; }
+        public ICommand SubtractCommand { set; get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
@@ -83,7 +89,7 @@ namespace MvvmCalcV1.ViewModels
             ClearEntryCommand = new Command(
               execute: () =>
             {
-                CurrentEntry = "0";
+                CurrentEntry = "";
                 isSumDisplayed = false;
                 RefreshCanExecutes();
             });
@@ -111,6 +117,18 @@ namespace MvvmCalcV1.ViewModels
                 else CurrentEntry += parameter;
 
                 isSumDisplayed = false;
+                String pattern = @"([-+*/])";
+            //if the last character is an operator, then add the currententry
+            if (Regex.IsMatch(HistoryString, pattern))
+                {
+                    HistoryString = HistoryString + CurrentEntry;
+                }
+                else
+                {
+                    HistoryString = CurrentEntry;
+                }
+                
+
                 RefreshCanExecutes();
             },
               canExecute: (string parameter) =>
@@ -137,9 +155,9 @@ namespace MvvmCalcV1.ViewModels
                 execute: () =>
             {
                 double value = Double.Parse(CurrentEntry);
-                HistoryString += value.ToString() + " + ";
-                accumulatedSum += value;
-                CurrentEntry = accumulatedSum.ToString();
+                HistoryString += " + ";
+                //accumulatedSum += value;
+                //CurrentEntry = accumulatedSum.ToString();
                 isSumDisplayed = true;
                 RefreshCanExecutes();
             },
@@ -147,6 +165,114 @@ namespace MvvmCalcV1.ViewModels
             {
                 return !isSumDisplayed;
             });
+
+            MultiplyCommand = new Command(
+                execute: () =>
+                {
+                    double value = Double.Parse(CurrentEntry);
+                    HistoryString += " * ";
+
+                    //accumulatedSum = accumulatedSum * value;
+                    //CurrentEntry = accumulatedSum.ToString();
+
+                    isSumDisplayed = true;
+                    RefreshCanExecutes();
+                },
+                canExecute: () =>
+                {
+                    return !isSumDisplayed;
+                });
+
+            DivideCommand = new Command(
+                execute: () =>
+                {
+                    double value = Double.Parse(CurrentEntry);
+                    //HistoryString += value.ToString() + "/";
+                    HistoryString += "/";
+
+                    //accumulatedSum = accumulatedSum / value;
+                    //CurrentEntry = accumulatedSum.ToString();
+                    //CurrentEntry = HistoryString;
+
+                    isSumDisplayed = true;
+                    RefreshCanExecutes();
+                },
+                canExecute: () =>
+                {
+                    return !isSumDisplayed;
+                });
+
+            SubtractCommand = new Command(
+                execute: () =>
+                {
+                    double value = Double.Parse(CurrentEntry);
+                                //HistoryString += value.ToString() + "/";
+                                HistoryString += "-";
+
+                                //accumulatedSum = accumulatedSum / value;
+                                //CurrentEntry = accumulatedSum.ToString();
+                                //CurrentEntry = HistoryString;
+
+                                isSumDisplayed = true;
+                    RefreshCanExecutes();
+                },
+                canExecute: () =>
+                {
+                    return !isSumDisplayed;
+                });
+
+            EqualsCommand = new Command(
+                execute: () =>
+                {
+                    String displayText = "";
+                    displayText = HistoryString;
+                    String[] expressions = new String[] { displayText };
+                    decimal total = 0.0000000000m;
+                    decimal value1 = 0.0000000000m;
+                    decimal value2 = 0.0000000000m;
+
+                    String pattern = @"([-+*/])";
+                    string[] substrings = Regex.Split(displayText, pattern);    // Split on hyphens
+                    foreach (var expression in expressions)
+                        foreach (Match m in Regex.Matches(expression, pattern))
+                        {
+                            Decimal.TryParse(substrings[0], out value1);
+                            Decimal.TryParse(substrings[2], out value2);
+                            switch (substrings[1])
+                            {
+                                case "+":
+                                    total = value1 + value2;
+                                    total = Math.Round(total, 15);
+                                    displayText = total.ToString();
+                                    break;
+                                case "-":
+                                    total = value1 - value2;
+                                    total = Math.Round(total, 15);
+                                    displayText = total.ToString();
+                                    break;
+                                case "*":
+                                    total = value1 * value2;
+                                    total = Math.Round(total, 15);
+                                    displayText = total.ToString();
+                                    break;
+                                case "/":
+                                    total = value1 / value2;
+                                    total = Math.Round(total, 15);
+                                    displayText = total.ToString();
+                                    break;
+                            }
+
+
+                        }
+
+                    CurrentEntry = displayText;
+
+
+                },
+                canExecute: () =>
+                {
+                    return !isSumDisplayed;
+                });
 
         }
 
@@ -156,6 +282,9 @@ namespace MvvmCalcV1.ViewModels
             ((Command)NumericCommand).ChangeCanExecute();
             ((Command)DecimalPointCommand).ChangeCanExecute();
             ((Command)AddCommand).ChangeCanExecute();
+            ((Command)MultiplyCommand).ChangeCanExecute();
+            ((Command)DivideCommand).ChangeCanExecute();
+            ((Command)SubtractCommand).ChangeCanExecute();
         }
 
         public void SaveState(IDictionary<string, object> dictionary)
