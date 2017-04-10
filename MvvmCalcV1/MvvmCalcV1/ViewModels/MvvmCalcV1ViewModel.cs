@@ -116,7 +116,7 @@ namespace MvvmCalcV1.ViewModels
                     CurrentEntry = parameter;
                 else CurrentEntry += parameter;
 
-                isSumDisplayed = false;
+                //isSumDisplayed = false;
                 String pattern = @"([-+*/])";
             //if the last character is an operator, then add the currententry
             if (Regex.IsMatch(HistoryString, pattern))
